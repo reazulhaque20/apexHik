@@ -11,6 +11,7 @@
 	<groupId>com.apex.hik</groupId>
 	<artifactId>apexHik</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>apexHik</name>
 	<description>Apex Hikvision</description>
 	<properties>
