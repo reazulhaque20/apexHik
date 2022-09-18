@@ -4,6 +4,7 @@ import com.apex.hik.model.Countries;
 import com.apex.hik.model.Country;
 import com.apex.hik.model.EmployeeAddresses;
 import com.apex.hik.model.EmployeeNames;
+import com.apex.hik.response.Response;
 import com.apex.hik.service.CountryClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -24,14 +26,19 @@ public class CountryResource {
     private final CountryClient countryClient;
 
 @GetMapping("/getData")
-public void getAllEuropeanFrenchSpeakingCountries() throws InterruptedException {
-    System.out.println("Test As");
+public Countries getAllEuropeanFrenchSpeakingCountries() throws InterruptedException, ExecutionException {
+    System.out.println("Test Thread");
     CompletableFuture<List<Country>> countriesByLanguageFuture = countryClient.getCountriesByLanguage("fr");
     CompletableFuture<List<Country>> countriesByRegionFuture = countryClient.getCountriesByRegion("europe");
 
     CompletableFuture.allOf(countriesByLanguageFuture, countriesByRegionFuture).join();
-    System.out.println("Country By Language:" + countriesByLanguageFuture);
-    System.out.println("Country By Region:" + countriesByRegionFuture);
+    System.out.println("Country By Language: " + countriesByLanguageFuture.get());
+    System.out.println("Country By Region: " + countriesByRegionFuture.get());
+
+    Countries countryList = new Countries();
+    countryList.setCountryByLanguage(countriesByLanguageFuture.get());
+    countryList.setCountryByRegion(countriesByRegionFuture.get());
+    return countryList;
 }
 
     @GetMapping("/empData")

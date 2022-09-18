@@ -23,39 +23,38 @@ public class CountryClient {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-@Async("asyncExecutor")
+    @Async("asyncExecutor")
     public CompletableFuture<List<Country>> getCountriesByLanguage(String language) throws InterruptedException {
         String url = "https://restcountries.com/v2/lang/" + language + "?fields=name";
-    ResponseEntity<Country[]> response = restTemplate.getForEntity(url, Country[].class);
-    Country[] countryArray = response.getBody();
-    System.out.println("Country Array: " + countryArray);
-    ResponseEntity<List<Country>> responseEntity =
+//      ResponseEntity<Country[]> response = restTemplate.getForEntity(url, Country[].class);
+//      Country[] countryArray = response.getBody();
+//      System.out.println("Country Array: " + countryArray);
+        ResponseEntity<List<Country>> responseEntity =
             restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Country>>() {}
             );
-    List<Country> countryList = responseEntity.getBody();
+        List<Country> countryList = responseEntity.getBody();
 
         Thread.sleep(1000L);  //Intentional delay
         return CompletableFuture.completedFuture(countryList);
     }
-@Async("asyncExecutor")
+    @Async("asyncExecutor")
     public CompletableFuture<List<Country>> getCountriesByRegion(String region) throws InterruptedException {
-        String url = "https://restcountries.eu/rest/v2/region/" + region + "?fields=name";
-    ResponseEntity<Country[]> response = restTemplate.getForEntity(url, Country[].class);
-    Country[] countryArray = response.getBody();
-    System.out.println("Country Array: " + countryArray);
-    ResponseEntity<List<Country>> responseEntity =
+        String url = "https://restcountries.com/v2/region/" + region + "?fields=name";
+//        ResponseEntity<Country[]> response = restTemplate.getForEntity(url, Country[].class);
+//        Country[] countryArray = response.getBody();
+//        System.out.println("Country Array: " + countryArray);
+        ResponseEntity<List<Country>> responseEntity =
             restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Country>>() {}
             );
-    List<Country> countryList = responseEntity.getBody();
-    System.out.println("Country By Region: " + countryList);
+        List<Country> countryList = responseEntity.getBody();
         Thread.sleep(1000L);  //Intentional delay
         return CompletableFuture.completedFuture(countryList);
     }

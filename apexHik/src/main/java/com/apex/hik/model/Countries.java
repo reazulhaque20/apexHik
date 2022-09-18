@@ -7,5 +7,6 @@ import java.util.List;
 @Data
 @ToString
 public class Countries {
-    List<Country> countryList;
+    List<Country> countryByLanguage;
+    List<Country> countryByRegion;
 }
